@@ -1,5 +1,6 @@
 ﻿namespace MVVMTutorial.Commands
 {
+    using System;
     using System.Windows.Input;
     using MVVMTutorial.ViewModels;
 
@@ -25,7 +26,7 @@
 
         public bool CanExecute(object paramater)
         {
-            return _ViewModel.CanUpdate;
+            return String.IsNullOrWhiteSpace(_ViewModel.Customer.Error);
         }
 
         public void Execute(object paramater)

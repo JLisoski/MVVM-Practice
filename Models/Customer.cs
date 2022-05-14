@@ -4,7 +4,7 @@ namespace MVVMTutorial.Models
 {
     using System;
     using System.ComponentModel;
-    public class Customer : INotifyPropertyChanged
+    public class Customer : INotifyPropertyChanged, IDataErrorInfo
     {
         /// <summary>
         ///  Initializes a new instance of the Customer Class.
@@ -44,6 +44,36 @@ namespace MVVMTutorial.Models
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
 
+        }
+
+        #endregion
+
+        #region IDataErrorInfo Members
+
+        public string Error
+        {
+            get;
+            private set;
+        }
+
+        public string this[string columnName]
+        {
+            get 
+            { 
+                if(columnName == "Name")
+                {
+                    if (String.IsNullOrWhiteSpace(Name))
+                    {
+                        Error = "Name cannot be null or empty.";
+                    }
+                    else
+                    {
+                        Error = null;
+                    }
+                }
+
+                return Error;
+            }
         }
 
         #endregion

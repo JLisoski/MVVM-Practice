@@ -5,6 +5,7 @@
     using System.Windows.Input;
     using MVVMTutorial.Commands;
     using MVVMTutorial.Models;
+    using MVVMTutorial.Views;
     internal class CustomerViewModel
     {
         /// <summary>
@@ -13,24 +14,12 @@
         public CustomerViewModel()
         {
             _Customer = new Customer("Joshua");
+            childViewModel = new CustomerInfoViewModel() { Info = "Instantiated in CustomerViewModel() ctor."};
             UpdateCommand = new CustomerUpdateCommand(this);
         }
 
-        /// <summary>
-        /// Gets or sets a System.Boolean value indicating whether the Customer can be updated. 
-        /// </summary>
-        public bool CanUpdate {
-            get
-            {
-                if(Customer == null)
-                {
-                    return false;
-                }
-                return !String.IsNullOrWhiteSpace(Customer.Name);
-            }
-        }
-
         private Customer _Customer;
+        private CustomerInfoViewModel childViewModel;
         /// <summary>
         /// Gets the customer instance.
         /// </summary>
@@ -54,7 +43,14 @@
         /// </summary>
         public void SaveChanges()
         {
-            Debug.Assert(false, String.Format("{0} was updated.", Customer.Name));
+            //Debug.Assert(false, String.Format("{0} was updated.", Customer.Name));
+
+            CustomerInfoView view = new CustomerInfoView();
+            view.DataContext = childViewModel;
+
+            //childViewModel.Info = Customer.Name + " was updaed in the Database.";
+
+            view.ShowDialog();
         }
     }
 }
